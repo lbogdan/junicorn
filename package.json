@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "prod": "ng build --prod",
+    "start": "ng serve --host 0.0.0.0 --disable-host-check",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "compodoc": "compodoc -p src/tsconfig.app.json -d docs --theme material -s"
+    "compodoc": "compodoc -p src/tsconfig.app.json -d docs --theme material -s",
+    "deploy-staging": "firebase deploy --non-interactive --token $FIREBASE_TOKEN"
   },
   "private": true,
   "dependencies": {
