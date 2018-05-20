@@ -1,10 +1,10 @@
 {
-  "name": "junicorn",
-  "short_name": "junicorn",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "Junicorn Crafts",
+  "short_name": "Junicorn Crafts",
+  "theme_color": "#f32173",
+  "background_color": "#f32173",
   "display": "standalone",
-  "scope": "/",
+  "Scope": "/",
   "start_url": "/",
   "icons": [
     {
@@ -47,5 +47,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "splash_pages": null
 }
