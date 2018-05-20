@@ -1,0 +1,34 @@
+language: node_js
+
+node_js:
+  - node
+
+branches:
+  only:
+  - master
+
+before_script:
+  - yarn global add firebase-tools
+  - yarn global add @angular/cli
+  - cd functions && yarn && cd ..
+
+script:
+  - echo "Instantiating Tests..."
+  - yarn lint
+  - yarn build
+  - test $TRAVIS_BRANCH = "master" 
+  - test $TRAVIS_PULL_REQUEST = "false"
+
+after_success:
+  - yarn deploy-staging
+
+notifications:
+  email:
+    on_failure: change
+    on_success: change
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - functions/node_modules
