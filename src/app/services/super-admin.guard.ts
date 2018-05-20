@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { GlobalService } from '../services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { Observable } from 'rxjs';
 
 @Injectable()
