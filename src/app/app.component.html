@@ -1,21 +1,44 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
-<router-outlet></router-outlet>
+<mat-toolbar *ngIf="!router.url.includes('/admin')" class="main-header">
+  <mat-icon class="material-icons menu-trigger" (click)="mobilenav.toggle()">menu</mat-icon>
+  <h1><a routerLink="/" (click)="mobilenav.close()">{{ (theme | async)?.siteName }}</a></h1>
+  <span class="fill-space"></span>
+  <ul>
+        <span *ngFor="let item of nav | async" class="nav-item">
+            <li *ngIf="item.label && item.label !== '' && item.url && item.url !== ''">
+                <a *ngIf="!item.url.includes('.')" routerLink="{{item.url}}"
+                   [ngClass]="{ 'color-main': router.url.includes(item.url) }">{{item.label}}</a>
+                <a *ngIf="item.url.includes('.')" href="{{item.url}}" target="_blank">{{item.label}}</a>
+            </li>
+        </span>
+    <li class="search-nav">
+      <mat-icon (click)="mobilenav.close()" routerLink="/search"
+                [ngClass]="{ 'color-main': router.url.includes('search') }">search
+      </mat-icon>
+    </li>
+    <li class="cart-nav" (click)="mobilenav.close()" [ngClass]="{ 'color-main': router.url.includes('cart') }">
+      <cart-icon></cart-icon>
+    </li>
+    <li *ngIf="(user | async)?.displayName" class="user-nav">
+      <img src="{{ (user | async)?.photoURL }}" class="user-photo" (click)="mobilenav.close()"
+           [matMenuTriggerFor]="userMenu">
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/account/orders">My Account</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </li>
+    <li>
+      <button mat-raised-button (click)="login()" *ngIf="!(user | async)?.displayName">Login</button>
+    </li>
+  </ul>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #mobilenav mode="over" class="mobile-nav">
+    <div *ngFor="let item of nav | async" class="mobile-nav-item">
+      <a routerLink="{{item.url}}" (click)="mobilenav.close()"
+         *ngIf="item.label && item.label !== '' && item.url && item.url !== ''">
+        {{item.label}}
+      </a>
+    </div>
+  </mat-sidenav>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>

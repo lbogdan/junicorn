@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     this.admin.subscribe(currentAdmin => {
 
       if (currentAdmin) {
-        db.object('/admins/' + this.globalService.hashCode(currentAdmin.email)).valueChanges().take(1).subscribe((admin:any) => {
+        db.object('/admins/' + this.globalService.hashCode(currentAdmin.email)).valueChanges().subscribe((admin:any) => {
           if (admin && admin.role) {
             this.db.object('/admins/' + currentAdmin.uid).update({
               uid: currentAdmin.uid,

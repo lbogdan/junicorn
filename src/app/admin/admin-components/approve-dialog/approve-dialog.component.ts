@@ -8,6 +8,6 @@ import { MatDialogRef } from '@angular/material';
 })
 export class ApproveDialogComponent {
 
-  constructor(public dialogRef: MdDialogRef<any>) { }
+  constructor(public dialogRef: MatDialogRef<any>) { }
 
 }

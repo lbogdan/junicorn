@@ -3,7 +3,7 @@ import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
-import { LocalCartService } from "app/services/localcart.service";
+import { LocalCartService } from 'src/app/services/localcart.service';
 
 @Component({
   selector: 'checkout-billing',
@@ -63,7 +63,7 @@ export class CheckoutBillingComponent implements OnInit {
       } else {
           const snackBarRef = this.snackBar.open('You must complete the form', 'OK!', {
             duration: 3000,
-            extraClasses: ['warn-snackbar']
+            panelClass: ['warn-snackbar']
           });
       }
   }

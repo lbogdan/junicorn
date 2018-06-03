@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-checkout-confirmation',

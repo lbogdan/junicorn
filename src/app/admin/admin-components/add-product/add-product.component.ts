@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject, Input} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as firebase from 'firebase/app';
@@ -34,7 +34,7 @@ export class AddProductComponent implements OnInit {
   currentProduct: AngularFireObject<any>;
   currentModeratedProducts: AngularFireList<any>;
   entityObject: any;
-  dialogRef: MdDialogRef<any>;
+  dialogRef: MatDialogRef<any>;
   selectedOption: string;
   awaitingApproval: string;
 
@@ -46,7 +46,7 @@ export class AddProductComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     private fb: FirebaseApp,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
     this.newPublished = false;
     this.products = db.list('/products');
@@ -72,7 +72,7 @@ export class AddProductComponent implements OnInit {
 
           if (this.router.url.includes('approval')) {
             this.currentProduct = this.db.object('/approvals/products/' + params.key);
-            this.db.object('/approvals/products/' + params.key).valueChanges().take(1).subscribe((p:any) => {
+            this.db.object('/approvals/products/' + params.key).valueChanges().subscribe((p:any) => {
               if (p.category) {
                 this.ogCategory = p.category;
               }
@@ -82,7 +82,7 @@ export class AddProductComponent implements OnInit {
             });
           } else {
             this.currentProduct = this.db.object('/products/' + params.key);
-            this.db.object('/products/' + params.key).valueChanges().take(1).subscribe((p:any) => {
+            this.db.object('/products/' + params.key).valueChanges().subscribe((p:any) => {
               if (p.category) {
                 this.ogCategory = p.category;
               }
@@ -199,7 +199,7 @@ export class AddProductComponent implements OnInit {
 
     if (newTitle && newPrice && newDescription && this.currentAdmin.uid) {
 
-      let productObject = {
+      const productObject = {
         url: this.globalService.slugify(newTitle),
         dateUpdated: Date.now().toString(),
         rdateUpdated: (Date.now() * -1).toString(),
@@ -239,14 +239,15 @@ export class AddProductComponent implements OnInit {
     this.validateFields(newTitle, newDescription, newPrice);
   }
 
-  submitForModeration(newTitle: string, newPrice: string, newCategory: any, newWeight: number, newDescription: string, newPublished: boolean) {
+  submitForModeration(newTitle: string, newPrice: string, newCategory: any,
+    newWeight: number, newDescription: string, newPublished: boolean) {
     if (!newPublished) {
       newPublished = false;
     }
 
     if (newTitle && newPrice && newDescription && this.currentAdmin.uid) {
 
-      let approvalObject = {
+      const approvalObject = {
         entityKey: this.router.url.includes('approval') ? this.entityObject.entityKey : this.productKey,
         url: this.globalService.slugify(newTitle),
         dateUpdated: Date.now().toString(),
@@ -265,8 +266,10 @@ export class AddProductComponent implements OnInit {
 
         this.currentModeratedProducts = this.db.list('/approvals/products/');
 
-        let adminApprovalProducts = this.db.list('/approvals/products/', ref => ref.orderByChild('updatedBy').equalTo(this.currentAdmin.uid)).valueChanges();
-        adminApprovalProducts.take(1).subscribe((approvals:any) => {
+        const adminApprovalProducts = this.db.list('/approvals/products/', ref => ref.orderByChild('updatedBy')
+          .equalTo(this.currentAdmin.uid))
+          .valueChanges();
+        adminApprovalProducts.subscribe((approvals:any) => {
 
           let matchingApprovals = [];
           if (this.router.url.includes('approval')) {
@@ -301,8 +304,8 @@ export class AddProductComponent implements OnInit {
 
   approveItem(newTitle: string, newPrice: string, newCategory: any, newDescription: string, newPublished: boolean) {
     if (this.entityObject.entityKey) {
-      let ogEntity = this.db.object('/products/' + this.entityObject.entityKey);
-      ogEntity.valueChanges().take(1).subscribe((item:any) => {
+      const ogEntity = this.db.object('/products/' + this.entityObject.entityKey);
+      ogEntity.valueChanges().subscribe((item:any) => {
         this.updateCategory(item.category, this.entityObject.category, this.entityObject.entityKey);
         ogEntity.set(this.entityObject);
       });
@@ -323,7 +326,7 @@ export class AddProductComponent implements OnInit {
 
   deleteItem(event) {
     event.stopPropagation();
-    let dialogRef = this.dialog.open(DeleteDialogComponent);
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
@@ -331,7 +334,7 @@ export class AddProductComponent implements OnInit {
         const snackBarRef = this.snackBar.open('Draft deleted', 'OK!', {
           duration: 3000
         });
-        this.router.navigateByUrl('admin/products')
+        this.router.navigateByUrl('admin/products');
       }
     });
   }

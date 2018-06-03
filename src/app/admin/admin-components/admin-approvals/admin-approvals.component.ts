@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { ApproveDialogComponent } from '../approve-dialog/approve-dialog.component';
 import { GlobalService } from 'src/app/services/global.service';
@@ -18,13 +18,13 @@ export class AdminApprovalsComponent {
   pageApprovals: Observable<any>;
   postApprovals: Observable<any>;
   selectedOption: any;
-  dialogRef: MdDialogRef<any>;
+  dialogRef: MatDialogRef<any>;
   users: Observable<any>;
   currentAdmin: any;
 
   constructor(
     public db: AngularFireDatabase,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     public snackBar: MatSnackBar,
     public globalService: GlobalService
   ) {
@@ -47,7 +47,7 @@ export class AdminApprovalsComponent {
       if (this.selectedOption === 'approve') {
         if (entityObject.entityKey) {
           let ogEntity = this.db.object('/' + entity + '/' + entityObject.entityKey);
-          ogEntity.valueChanges().take(1).subscribe((item:any) => {
+          ogEntity.valueChanges().subscribe((item:any) => {
             if (entity === 'products' && item.category && entityObject.category) {
               this.db.object('/categories/' + item.category + '/products/' + entityObject.entityKey).remove();
               this.db.object('/categories/' + entityObject.category + '/products/' + entityObject.entityKey).set(Date.now().toString());

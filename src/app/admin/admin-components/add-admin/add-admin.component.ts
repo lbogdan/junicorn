@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import { MatSnackBar } from '@angular/material';
-import { GlobalService } from 'app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -35,7 +35,7 @@ export class AddAdminComponent implements OnInit {
           this.adminKey = params.key;
           this.currentAdmin = this.db.object('/admins/' + params.key).valueChanges();
 
-          this.currentAdmin.subscribe((a:any) => {
+          this.currentAdmin.subscribe((a: any) => {
             this.newEmail = a.email;
             this.newRole = a.role;
           });

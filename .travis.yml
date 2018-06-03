@@ -16,11 +16,11 @@ script:
   - echo "Instantiating Tests..."
   - yarn lint
   - yarn build
-  - test $TRAVIS_BRANCH = "master" 
+  - test $TRAVIS_BRANCH = "master"
   - test $TRAVIS_PULL_REQUEST = "false"
 
 after_success:
-  - yarn deploy-staging
+  - yarn deploy
 
 notifications:
   email:

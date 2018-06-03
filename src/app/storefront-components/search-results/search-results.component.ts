@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-search-results',

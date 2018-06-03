@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -33,7 +33,7 @@ export class AddPageComponent implements OnInit {
     public globalService: GlobalService,
     public router: Router,
     public route: ActivatedRoute,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
     this.newPublished = false;
     this.pages = db.list('/pages').valueChanges();
@@ -50,7 +50,7 @@ export class AddPageComponent implements OnInit {
 
           if (this.router.url.includes('approval')) {
             this.currentPage = this.db.object('/approvals/pages/' + params.key).valueChanges();
-            this.db.object('/approvals/pages/' + this.pageKey).valueChanges().subscribe((approvalPage:any) => {
+            this.db.object('/approvals/pages/' + this.pageKey).valueChanges().subscribe((approvalPage: any) => {
               this.entityObject = approvalPage;
             });
           } else {
@@ -58,7 +58,7 @@ export class AddPageComponent implements OnInit {
 
             // check to see if any approvals are awaiting on this page
             this.db.list('/approvals/pages', ref => ref.orderByChild('entityKey').equalTo(params.key)).snapshotChanges()
-              .subscribe((approval:any) => {
+              .subscribe((approval: any) => {
                 if (approval.length > 0 && approval[0]) {
                   this.awaitingApproval = approval[0].key;
                 }
@@ -90,7 +90,7 @@ export class AddPageComponent implements OnInit {
 
     if (newURL && newTitle && newBody && this.currentAdmin.uid) {
 
-      let pageObject = {
+      const pageObject = {
         url: newURL,
         dateUpdated: Date.now().toString(),
         rdateUpdated: (Date.now() * -1).toString(),
@@ -124,7 +124,7 @@ export class AddPageComponent implements OnInit {
 
     if (newURL && newTitle && newBody && this.currentAdmin.uid) {
 
-      let approvalObject = {
+      const approvalObject = {
         entityKey: this.router.url.includes('approval') ? this.entityObject.entityKey : this.pageKey,
         url: newURL,
         dateUpdated: Date.now().toString(),
@@ -138,9 +138,10 @@ export class AddPageComponent implements OnInit {
       if (this.editMode && this.pageKey) {
         this.currentModeratedPages = this.db.list('/approvals/pages/');
 
-        let adminApprovalPages = this.db.list('/approvals/pages/', ref => ref.orderByChild('updatedBy').equalTo(this.currentAdmin.uid)).valueChanges();
+        const adminApprovalPages = this.db.list('/approvals/pages/', ref => ref.orderByChild('updatedBy')
+                                    .equalTo(this.currentAdmin.uid)).valueChanges();
 
-        adminApprovalPages.take(1).subscribe((approvals:any) => {
+        adminApprovalPages.subscribe((approvals: any) => {
           let matchingApprovals = [];
           if (this.router.url.includes('approval')) {
             matchingApprovals = approvals.filter((match) => {
@@ -173,7 +174,7 @@ export class AddPageComponent implements OnInit {
 
   approveItem(newURL: string, newTitle: string, newBody: true, newPublished: boolean) {
     if (this.entityObject.entityKey) {
-      let ogEntity = this.db.object('/pages/' + this.entityObject.entityKey);
+      const ogEntity = this.db.object('/pages/' + this.entityObject.entityKey);
       ogEntity.set(this.entityObject);
     } else {
       this.db.list('/pages').push(this.entityObject);
@@ -188,7 +189,7 @@ export class AddPageComponent implements OnInit {
 
   deleteItem(event) {
     event.stopPropagation();
-    let dialogRef = this.dialog.open(DeleteDialogComponent);
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
@@ -196,7 +197,7 @@ export class AddPageComponent implements OnInit {
         const snackBarRef = this.snackBar.open('Draft deleted', 'OK!', {
           duration: 3000
         });
-        this.router.navigateByUrl('admin/pages')
+        this.router.navigateByUrl('admin/pages');
       }
     });
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, Input} from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import * as firebase from 'firebase/app';
@@ -31,7 +31,7 @@ export class AddPostComponent implements OnInit {
   currentPost: AngularFireObject<any>;
   currentModeratedPosts: AngularFireList<any>;
   entityObject: any;
-  dialogRef: MdDialogRef<any>;
+  dialogRef: MatDialogRef<any>;
   selectedOption: string;
   awaitingApproval: string;
 
@@ -43,7 +43,7 @@ export class AddPostComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     private fb: FirebaseApp,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
 
     this.newPublished = false;
@@ -64,7 +64,7 @@ export class AddPostComponent implements OnInit {
 
         if (this.router.url.includes('approval')) {
           this.currentPost = this.db.object('/approvals/posts/' + params.key);
-          this.db.object('/approvals/posts/' + this.postKey).valueChanges().subscribe((approvalPost:any) => {
+          this.db.object('/approvals/posts/' + this.postKey).valueChanges().subscribe((approvalPost: any) => {
             this.entityObject = approvalPost;
           });
         } else {
@@ -72,14 +72,14 @@ export class AddPostComponent implements OnInit {
 
           // check to see if any approvals are awaiting on this post
           this.db.list('/approvals/posts', ref => ref.orderByChild('entityKey').equalTo(params.key)).snapshotChanges()
-            .subscribe((approval:any) => {
+            .subscribe((approval: any) => {
               if (approval.length > 0 && approval[0]) {
                 this.awaitingApproval = approval[0].key;
               }
           });
         }
 
-        this.currentPost.valueChanges().subscribe((p:any) => {
+        this.currentPost.valueChanges().subscribe((p: any) => {
           this.newURL = p.url;
           this.newDate = p.date;
           this.newTitle = p.title;
@@ -114,10 +114,10 @@ export class AddPostComponent implements OnInit {
   }
 
   uploadImage() {
-    let storageRef = firebase.storage().ref();
-    let path = Date.now().toString() + '-' + this.file.name;
-    let iRef = storageRef.child('posts/' + path);
-    let me = this;
+    const storageRef = firebase.storage().ref();
+    const path = Date.now().toString() + '-' + this.file.name;
+    const iRef = storageRef.child('posts/' + path);
+    const me = this;
     iRef.put(this.file).then((snapshot) => {
         const snackBarRef = this.snackBar.open('Image uploaded', 'OK!', {
           duration: 3000
@@ -134,10 +134,10 @@ export class AddPostComponent implements OnInit {
   }
 
   deleteImageRef() {
-    let storage = firebase.storage();
-    let imageRef = storage.refFromURL(this.imageUrl);
+    const storage = firebase.storage();
+    const imageRef = storage.refFromURL(this.imageUrl);
 
-    let me = this;
+    const me = this;
     imageRef.delete().then(function() {
       me.imageUrl = null;
     }).catch(function(error) {
@@ -151,10 +151,10 @@ export class AddPostComponent implements OnInit {
     }
 
     if (newURL && newDate && newTitle && newBody && this.currentAdmin.uid) {
-      let date = new Date(newDate);
-      let dateTime = date.getTime();
+      const date = new Date(newDate);
+      const dateTime = date.getTime();
 
-      let postObject = {
+      const postObject = {
         url: newURL,
         dateUpdated: Date.now().toString(),
         rdateUpdated: (Date.now() * -1).toString(),
@@ -194,10 +194,10 @@ export class AddPostComponent implements OnInit {
     }
 
     if (newURL && newDate && newTitle && newBody && this.currentAdmin.uid) {
-      let date = new Date(newDate);
-      let dateTime = date.getTime();
+      const date = new Date(newDate);
+      const dateTime = date.getTime();
 
-      let approvalObject = {
+      const approvalObject = {
         entityKey: this.router.url.includes('approval') ? this.entityObject.entityKey : this.postKey,
         url: newURL,
         dateUpdated: Date.now().toString(),
@@ -214,9 +214,10 @@ export class AddPostComponent implements OnInit {
 
         this.currentModeratedPosts = this.db.list('/approvals/posts/');
 
-        let adminApprovalPosts = this.db.list('/approvals/posts/', ref => ref.orderByChild('updatedBy').equalTo(this.currentAdmin.uid)).valueChanges();
+        const adminApprovalPosts = this.db.list('/approvals/posts/', ref => ref.orderByChild('updatedBy')
+                                  .equalTo(this.currentAdmin.uid)).valueChanges();
 
-        adminApprovalPosts.take(1).subscribe((approvals:any) => {
+        adminApprovalPosts.subscribe((approvals: any) => {
           let matchingApprovals = [];
           if (this.router.url.includes('approval')) {
             matchingApprovals = approvals.filter((match) => {
@@ -250,7 +251,7 @@ export class AddPostComponent implements OnInit {
 
   approveItem(newURL: string, newDate: string, newTitle: string, newBody: string, newPublished: boolean) {
     if (this.entityObject.entityKey) {
-      let ogEntity = this.db.object('/posts/' + this.entityObject.entityKey);
+      const ogEntity = this.db.object('/posts/' + this.entityObject.entityKey);
       ogEntity.set(this.entityObject);
     } else {
       this.db.list('/posts').push(this.entityObject);
@@ -265,7 +266,7 @@ export class AddPostComponent implements OnInit {
 
   deleteItem(event) {
     event.stopPropagation();
-    let dialogRef = this.dialog.open(DeleteDialogComponent);
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
@@ -273,7 +274,7 @@ export class AddPostComponent implements OnInit {
         const snackBarRef = this.snackBar.open('Draft deleted', 'OK!', {
           duration: 3000
         });
-        this.router.navigateByUrl('admin/posts')
+        this.router.navigateByUrl('admin/posts');
       }
     });
   }
