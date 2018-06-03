@@ -17,7 +17,7 @@ script:
   - yarn lint
   - yarn build
   - test $TRAVIS_BRANCH = "master"
-  - test $TRAVIS_PULL_REQUEST = "false"
+  - test $TRAVIS_PULL_REQUEST = "true"
 
 after_success:
   - yarn deploy
