@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { MatSnackBar } from '@angular/material';
@@ -97,7 +97,7 @@ export class CheckoutPaymentComponent implements OnInit {
     } else {
       const snackBarRef = this.snackBar.open('You must complete the form', 'OK!', {
         duration: 3000,
-        extraClasses: ['warn-snackbar']
+        panelClass: ['warn-snackbar']
       });
     }
   }

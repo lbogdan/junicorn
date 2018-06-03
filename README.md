@@ -8,3 +8,6 @@
 - added travis CI
 - initiated firebase project
 - added firebase functions
+- Added storefront components
+- services,dorectives and pipes
+- 

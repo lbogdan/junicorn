@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'cart-icon',
   templateUrl: './cart-icon.component.html',
   styleUrls: ['./cart-icon.component.scss']
 })
-export class CartIconComponent implements OnInit {
+export class CartIconComponent {
   globalCart: any;
   user: Observable<firebase.User>;
   cartItems = 0;
@@ -36,8 +37,5 @@ export class CartIconComponent implements OnInit {
       });
     });
 
-  }
-
-  ngOnInit() {
   }
 }

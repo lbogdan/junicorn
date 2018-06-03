@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title, Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { GlobalService } from '../src/app/services/global.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { Observable } from 'rxjs';
 
 @Component({

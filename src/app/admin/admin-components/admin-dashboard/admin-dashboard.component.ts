@@ -17,7 +17,7 @@ export class AdminDashboardComponent implements OnInit {
   customers: Observable<any[]>;
   categories: Observable<any[]>;
   orders: Observable<any[]>;
-  approvals: Observable<any[]>;
+  approvals: any;
   approvalsTotal: number;
   currentAdmin: any;
   columns: number;
@@ -32,7 +32,6 @@ export class AdminDashboardComponent implements OnInit {
     this.orders = db.list('/orders').valueChanges();
     this.approvals = db.object('/approvals').valueChanges();
 
-    this.posts.subscribe
 
     this.columns = 3;
     this.approvalsTotal = 0;
@@ -43,7 +42,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.approvals.subscribe((a:any) => {
+    this.approvals.subscribe((a: any) => {
       if (a && a.products) {
         this.approvalsTotal += Object.keys(a.products).length;
       }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
 import { GlobalService } from 'src/app/services/global.service';
 import { Observable } from 'rxjs';
@@ -14,12 +14,12 @@ export class AdminCustomersComponent {
 
   customers: Observable<any[]>;
   selectedOption: any;
-  dialogRef: MdDialogRef<any>;
+  dialogRef: MatDialogRef<any>;
   currentAdmin: any;
 
   constructor(
     public db: AngularFireDatabase,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     public snackBar: MatSnackBar,
     public globalService: GlobalService
   ) {

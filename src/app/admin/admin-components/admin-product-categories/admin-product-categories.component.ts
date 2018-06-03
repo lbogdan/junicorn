@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { Router }    from '@angular/router';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
 import { Observable } from 'rxjs';
 
@@ -14,14 +14,14 @@ import { Observable } from 'rxjs';
 export class AdminProductCategoriesComponent implements OnInit {
 
   categories: Observable<any>;
-  dialogRef: MdDialogRef<any>;
+  dialogRef: MatDialogRef<any>;
   selectedOption: any;
   currentAdmin: any;
 
   constructor(
     public db: AngularFireDatabase,
     public router: Router,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     public snackBar: MatSnackBar,
     public globalService: GlobalService
   ) {

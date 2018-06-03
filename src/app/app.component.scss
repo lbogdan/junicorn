@@ -1,0 +1,13 @@
+.outerDiv {
+  display: inline-flex;  // <-- This is responsible for vertical alignment
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  //background-color: red;
+  //color: white;
+}
+
+.innerDiv {
+  margin: auto 5px;   // <-- This is responsible for vertical alignment
+  //background-color: green;
+}

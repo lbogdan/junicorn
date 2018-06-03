@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "compodoc": "compodoc -p src/tsconfig.app.json -d docs --theme material -s",
-    "deploy-staging": "firebase deploy --non-interactive --token $FIREBASE_TOKEN"
+    "build-deploy": "yarn build && firebase deploy --only hosting",
+    "deploy": "firebase deploy --non-interactive --token $FIREBASE_TOKEN"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +31,8 @@
     "core-js": "^2.5.4",
     "firebase": "^5.0.3",
     "hammerjs": "^2.0.8",
+    "ng2-ckeditor": "^1.2.0",
+    "ng2-dnd": "^5.0.2",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },

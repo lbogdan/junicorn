@@ -1,23 +1,82 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import * as firebase from 'firebase';
+import { MaterialComponentsModule } from 'src/app/materialcomponents.module';
+import { SharedModule } from 'src/app/shared.module';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import 'hammerjs';
+
+// storefront components
+import { OrdersComponent } from './storefront-components/orders/orders.component';
+import { PostsComponent } from './storefront-components/posts/posts.component';
+import { PagesComponent } from './storefront-components/pages/pages.component';
+import { PageComponent } from './storefront-components/page/page.component';
+import { PostComponent } from './storefront-components/post/post.component';
+import { ProductsComponent } from './storefront-components/products/products.component';
+import { ProductComponent } from './storefront-components/product/product.component';
+import { CartComponent } from './storefront-components/cart/cart.component';
+import { CartIconComponent } from './storefront-components/cart-icon/cart-icon.component';
+import { CheckoutShippingComponent } from './storefront-components/checkout-shipping/checkout-shipping.component';
+import { CheckoutBillingComponent } from './storefront-components/checkout-billing/checkout-billing.component';
+import { CheckoutPaymentComponent } from './storefront-components/checkout-payment/checkout-payment.component';
+import { CheckoutReviewComponent } from './storefront-components/checkout-review/checkout-review.component';
+import { CheckoutConfirmationComponent } from './storefront-components/checkout-confirmation/checkout-confirmation.component';
+import { ProductCategoryComponent } from './storefront-components/product-category/product-category.component';
+import { ProductCategoriesComponent } from './storefront-components/product-categories/product-categories.component';
+import { SearchResultsComponent } from './storefront-components/search-results/search-results.component';
+import { LoginComponent } from './storefront-components/login/login.component';
+
+// services
+import { GlobalService } from './services/global.service';
+
+// directives
+import { StopPropagationDirective } from './directives/stop-propagation.directive';
+import {LocalCartService} from './services/localcart.service';
+
+firebase.initializeApp(environment.firebase);
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase, 'firebase-cms'),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    BrowserAnimationsModule,
+    FormsModule,
     AppRoutingModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-    BrowserAnimationsModule
+    MaterialComponentsModule,
+    SharedModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  declarations: [
+    AppComponent,
+    CartComponent,
+    CartIconComponent,
+    CheckoutShippingComponent,
+    CheckoutBillingComponent,
+    CheckoutPaymentComponent,
+    CheckoutReviewComponent,
+    CheckoutConfirmationComponent,
+    LoginComponent,
+    OrdersComponent,
+    PagesComponent,
+    PageComponent,
+    PostComponent,
+    PostsComponent,
+    ProductsComponent,
+    ProductComponent,
+    ProductCategoryComponent,
+    ProductCategoriesComponent,
+    SearchResultsComponent,
+    StopPropagationDirective,
+  ],
+  providers: [ GlobalService, LocalCartService ],
+  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import 'firebase/storage';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 import { MaterialComponentsModule } from '../materialcomponents.module';
 import { SharedModule } from '../shared.module';

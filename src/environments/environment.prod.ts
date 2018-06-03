@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: 'junicorncraft.appspot.com',
     messagingSenderId: '803991229137',
   },
-  stripe: '123'
+  stripe: 'pk_live_vYbt3pA0V1xNvAgym4NMJBYK'
 };

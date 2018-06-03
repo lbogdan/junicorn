@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { MatSnackBar, MdDialogRef, MdDialog } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DeleteDialogComponent } from '../delete-dialog/delete-dialog.component';
@@ -33,7 +32,7 @@ export class AddProductCategoryComponent implements OnInit {
     public router: Router,
     public route: ActivatedRoute,
     public globalService: GlobalService,
-    public dialog: MdDialog
+    public dialog: MatDialog
   ) {
     this.categories = db.list('/categories');
 
@@ -50,15 +49,16 @@ export class AddProductCategoryComponent implements OnInit {
 
           if (this.router.url.includes('approval')) {
             this.currentCategory = this.db.object('/approvals/categories/' + params.key);
-            this.db.object('/approvals/categories/' + this.categoryKey).valueChanges().subscribe((approvalCategory:any) => {
+            this.db.object('/approvals/categories/' + this.categoryKey).valueChanges().subscribe((approvalCategory: any) => {
               this.entityObject = approvalCategory;
             });
           } else {
             this.currentCategory = this.db.object('/categories/' + params.key);
 
             // check to see if any approvals are awaiting on this category
-            this.db.list('/approvals/categories', ref => ref.orderByChild('entityKey').equalTo(params.key)).snapshotChanges()
-              .subscribe((approval:any) => {
+            this.db.list('/approvals/categories', ref => ref.orderByChild('entityKey')
+              .equalTo(params.key)).snapshotChanges()
+              .subscribe((approval: any) => {
                 if (approval.length > 0 && approval[0]) {
                   this.awaitingApproval = approval[0].key;
                 }
@@ -81,7 +81,7 @@ export class AddProductCategoryComponent implements OnInit {
 
   addCategory(newName: string, newWeight: number) {
     if (newName) {
-      let categoryObject = {
+      const categoryObject = {
         name: newName,
         weight: newWeight,
         slug: this.globalService.slugify(newName),
@@ -111,7 +111,7 @@ export class AddProductCategoryComponent implements OnInit {
   submitForModeration(newName: string, newWeight: number) {
     if (newName && this.currentAdmin.uid) {
 
-      let approvalObject = {
+      const approvalObject = {
         entityKey: this.router.url.includes('approval') ? this.entityObject.entityKey : this.categoryKey,
         name: newName,
         weight: newWeight,
@@ -125,9 +125,10 @@ export class AddProductCategoryComponent implements OnInit {
       if (this.editMode && this.categoryKey) {
         this.currentModeratedCategories = this.db.list('/approvals/categories/');
 
-        let adminApprovalCategories = this.db.list('/approvals/categories/', ref => ref.orderByChild('updatedBy').equalTo(this.currentAdmin.uid)).valueChanges();
+        const adminApprovalCategories = this.db.list('/approvals/categories/', ref => ref.
+        orderByChild('updatedBy').equalTo(this.currentAdmin.uid)).valueChanges();
 
-        adminApprovalCategories.take(1).subscribe((approvals:any) => {
+        adminApprovalCategories.subscribe((approvals: any) => {
           let matchingApprovals = [];
           if (this.router.url.includes('approval')) {
             matchingApprovals = approvals.filter((match) => {
@@ -161,7 +162,7 @@ export class AddProductCategoryComponent implements OnInit {
 
   approveItem(newName: string, newWeight: number) {
     if (this.entityObject.entityKey) {
-      let ogEntity = this.db.object('/categories/' + this.entityObject.entityKey);
+      const ogEntity = this.db.object('/categories/' + this.entityObject.entityKey);
       ogEntity.update(this.entityObject);
     } else {
       this.db.list('/categories').push(this.entityObject);
@@ -176,7 +177,7 @@ export class AddProductCategoryComponent implements OnInit {
 
   deleteItem(event) {
     event.stopPropagation();
-    let dialogRef = this.dialog.open(DeleteDialogComponent);
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       this.selectedOption = result;
       if (this.selectedOption === 'delete') {
@@ -184,7 +185,7 @@ export class AddProductCategoryComponent implements OnInit {
         const snackBarRef = this.snackBar.open('Draft deleted', 'OK!', {
           duration: 3000
         });
-        this.router.navigateByUrl('admin/product-categories')
+        this.router.navigateByUrl('admin/product-categories');
       }
     });
   }

@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { GlobalService } from 'src/app/services/global.service';
 import { LocalCartService } from 'src/app/services/localcart.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'product',
