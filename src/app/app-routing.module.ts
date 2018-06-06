@@ -18,6 +18,7 @@ import { ProductCategoryComponent } from 'src/app/storefront-components/product-
 import { ProductCategoriesComponent } from 'src/app/storefront-components/product-categories/product-categories.component';
 import { SearchResultsComponent } from 'src/app/storefront-components/search-results/search-results.component';
 import { LoginComponent } from 'src/app/storefront-components/login/login.component';
+import { AstrayComponent } from './components/astray/astray.component';
 
 const routes: Routes = [
   { path: '', component: ProductCategoriesComponent },
@@ -56,7 +57,12 @@ const routes: Routes = [
   { path: 'blog/:url', component: PostComponent },
   { path: 'cart', component: CartComponent },
   { path: 'search', component: SearchResultsComponent },
+  { path: '404', component: AstrayComponent },
   { path: 'admin', loadChildren: 'src/app/admin/admin.module#AdminModule' },
+  {
+    path: '**', // any other path
+    redirectTo: '404',
+  }
 ];
 
 @NgModule({

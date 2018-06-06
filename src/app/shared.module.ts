@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { MaterialComponentsModule } from './materialcomponents.module';
 
 // Components
-import {OrderComponent} from './storefront-components/order/order.component';
+import { OrderComponent } from './storefront-components/order/order.component';
+import { AstrayComponent } from './components/astray/astray.component';
 
 // Pipes
 import { SortPipe } from './pipes/sort.pipe';
@@ -33,7 +34,8 @@ const pipes = [
   ],
   declarations: [
     ...pipes,
-    OrderComponent
+    OrderComponent,
+    AstrayComponent
   ],
   exports: [
     ...pipes,
